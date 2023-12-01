@@ -23,7 +23,7 @@ def retrieve_input():
         else:
             logger.error(f"Failed to download the file. Status code: {response.status_code}")
     else:
-        logger.info("The file [{file_path}] already exists.")
+        logger.info(f"The file [{file_path}] already exists.")
 
 
 sample = """1abc2
@@ -66,11 +66,7 @@ def prepare_data(datas):
 def part_1(input_data):
     result = []
     for i in input_data:
-        data = []
-        for j in i:
-            if j.isnumeric():
-                data.append(int(j))
-        result.append(data)
+        result.append([int(j) for j in i if j.isnumeric()])
     return sum([(int(f"{i[0]}{i[-1]}")) for i in result])
 
 
@@ -89,3 +85,4 @@ if __name__ == '__main__':
     load_data = open(file_path, 'r').read().splitlines()
     print(f"Day 1 part 1: {part_1(load_data)}")
     print(f"Day 1 part 2: {part_2(load_data)}")
+
