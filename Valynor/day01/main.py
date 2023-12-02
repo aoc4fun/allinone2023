@@ -45,29 +45,29 @@ eighthree1
 1sevenine2
 jnsjhqqtj6fourslpqntdzxpfive"""
 
-numberconvert = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8",
+number_convert = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5", "six": "6", "seven": "7", "eight": "8",
                  "nine": "9"}
 
 
 def find_min(data):
-    for i in numberconvert.keys():
-        if data.startswith(i):
-            return numberconvert[i]
+    for number in number_convert.keys():
+        if data.startswith(number):
+            return number_convert[number]
     return data[0]
 
 
-def prepare_data(datas):
+def prepare_data(data):
     result = []
-    for data in datas:
-        result.append([find_min(data[i:]) for i in range(0, len(data))])
+    for data in data:
+        result.append([find_min(data[index:]) for index in range(0, len(data))])
     return result
 
 
 def part_1(input_data):
     result = []
-    for i in input_data:
-        result.append([int(j) for j in i if j.isnumeric()])
-    return sum([(int(f"{i[0]}{i[-1]}")) for i in result])
+    for line in input_data:
+        result.append([int(char) for char in line if char.isnumeric()])
+    return sum([(int(f"{number[0]}{number[-1]}")) for number in result])
 
 
 def part_2(input_data):
