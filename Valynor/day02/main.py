@@ -66,7 +66,7 @@ def part_1(input_data):
     return sum(result)
 
 def power(draws):
-    min={"green":0,"blue":0,"red":0}
+    min = {"green":0,"blue":0,"red":0}
     for draw in draws:
         for color, number in draw.items():
             if min[color] < number:
