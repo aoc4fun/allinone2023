@@ -14,7 +14,7 @@ file_path = 'input_1.txt'
 
 def retrieve_input():
     if not os.path.exists(file_path):
-        response = requests.get('https://adventofcode.com/2023/day/1/input',
+        response = requests.get(url,
                                 headers={'cookie': f'session={adventcookie}', 'User-Agent': 'Mozilla/5.0'})
         if response.status_code == 200:
             with open(file_path, 'wb') as file:
