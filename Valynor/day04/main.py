@@ -47,15 +47,18 @@ def part_1(input_data):
     return sum([int(pow(2, len(set(i).intersection(j)) - 1)) for i, j in data])
 
 
+from collections import defaultdict
+
+
 def part_2(input_data):
     data = prepare_data(input_data)
-    copy = []
+    copy = defaultdict(int)
     for cardnumber in range(1, len(data) + 1):
-        copy.extend([cardnumber])
         winnercard = len(set(data[cardnumber - 1][0]).intersection(data[cardnumber - 1][1]))
-        for j in range(0, copy.count(cardnumber)):
-            copy.extend(list(range(cardnumber + 1, cardnumber + winnercard + 1)))
-    return len(copy)
+        copy[cardnumber] += 1
+        for i in list(range(cardnumber + 1, cardnumber + winnercard + 1)):
+            copy[i] += copy[cardnumber]
+    return sum(copy.values())
 
 
 if __name__ == '__main__':
