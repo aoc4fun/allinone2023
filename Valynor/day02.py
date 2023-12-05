@@ -1,31 +1,9 @@
-import os
-import requests
-from dotenv import load_dotenv
+import helper.helper as aoc
 import logging
 from functools import reduce
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-load_dotenv()
-adventcookie = os.getenv('adventcookie')
-url = 'https://adventofcode.com/2023/day/2/input'
-file_path = 'input_1.txt'
-
-
-def retrieve_input():
-    if not os.path.exists(file_path):
-        response = requests.get(url,
-                                headers={'cookie': f'session={adventcookie}', 'User-Agent': 'Mozilla/5.0'})
-        if response.status_code == 200:
-            with open(file_path, 'wb') as file:
-                file.write(response.content)
-            logger.info(f"File downloaded and saved as {file_path}")
-        else:
-            logger.error(f"Failed to download the file. Status code: {response.status_code}")
-    else:
-        logger.info(f"The file [{file_path}] already exists.")
-
 
 sample = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
@@ -86,8 +64,8 @@ if __name__ == '__main__':
     assert (power(parse_line(sample.splitlines()[0])[1]) == 48)
     assert (part_2(sample.splitlines()) == 2286)
 
-    retrieve_input()
-    load_data = open(file_path, 'r').read().splitlines()
+    aoc.retrieve_input(2,2023)
+    load_data = aoc.load_input(2,2023).splitlines()
     print(f"Day 2 part 1: {part_1(load_data)}")
     print(f"Day 2 part 2: {part_2(load_data)}")
 

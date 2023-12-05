@@ -1,32 +1,10 @@
-import os
+import helper.helper as aoc
 import sys
 
-import requests
-from dotenv import load_dotenv
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-load_dotenv()
-adventcookie = os.getenv('adventcookie')
-url = 'https://adventofcode.com/2023/day/5/input'
-file_path = 'input_1.txt'
-
-
-def retrieve_input():
-    if not os.path.exists(file_path):
-        response = requests.get(url,
-                                headers={'cookie': f'session={adventcookie}', 'User-Agent': 'Mozilla/5.0'})
-        if response.status_code == 200:
-            with open(file_path, 'wb') as file:
-                file.write(response.content)
-            logger.info(f"File downloaded and saved as {file_path}")
-        else:
-            logger.error(f"Failed to download the file. Status code: {response.status_code}")
-    else:
-        logger.info(f"The file [{file_path}] already exists.")
-
 
 sample = """seeds: 79 14 55 13
 
@@ -150,7 +128,7 @@ if __name__ == '__main__':
     assert (part_1(sample) == 35)
     assert (part_2(sample) == 46)
 
-    retrieve_input()
-    load_data = open(file_path, 'r').read()
+    aoc.retrieve_input(5,2023)
+    load_data = aoc.load_input(5,2023)
     print(f"Day 5 part 1: {part_1(load_data)}")
     print(f"Day 5 part 2: {part_2(load_data)}")
