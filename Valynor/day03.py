@@ -67,7 +67,6 @@ def part_1(input_data):
 
 def scanline_second(data,linenumber):
     list_gear={}
-    numbers=[]
     in_digit=False
     near=[]
     for pos_char in range(0,len(data[linenumber])):
@@ -79,7 +78,6 @@ def scanline_second(data,linenumber):
             gear_find=find_symbol(data,pos_char,linenumber,is_gear)
             if not gear_find in near:
                 near.append(gear_find)
-
         else:
             if in_digit and near:
                 for gear in near:
