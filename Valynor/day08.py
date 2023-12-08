@@ -1,5 +1,6 @@
 import helper.helper as aoc
 from math import gcd
+from functools import reduce
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -45,24 +46,24 @@ def prepare_data(data):
 
 def part_1(input_data):
     orders, nodes = prepare_data(input_data)
-    currentNode = "AAA"
+    current_node = "AAA"
     length = 0
-    while currentNode != "ZZZ":
-        logger.debug(f'Current node: {currentNode} with order {orders}')
-        currentNode = nodes[currentNode][orders[length % len(orders)] == "R"]
+    while current_node != "ZZZ":
+        logger.debug(f'Current node: {current_node} with order {orders}')
+        current_node = nodes[current_node][orders[length % len(orders)] == "R"]
         length += 1
     return length
 
 
-def move(currentNode, nodes, order):
-    return nodes[currentNode][(order == "R")]
+def move(current_node, nodes, order):
+    return nodes[current_node][(order == "R")]
 
 
 def find_start_node(nodes):
     return [node for node, data in nodes.items() if node.endswith("A")]
 
 
-def find_lenght(current_path, orders, nodes):
+def find_length(current_path, orders, nodes):
     length = 0
     while not current_path.endswith("Z"):
         current_path = move(current_path, nodes, orders[length % len(orders)])
@@ -72,12 +73,9 @@ def find_lenght(current_path, orders, nodes):
 
 def part_2(input_data):
     orders, nodes = prepare_data(input_data)
-    currents_length = [find_lenght(current_path, orders, nodes) for current_path in find_start_node(nodes)]
+    currents_length = [find_length(current_path, orders, nodes) for current_path in find_start_node(nodes)]
     logger.debug(f"Length: {currents_length}")
-    lcm = 1
-    for i in currents_length:
-        lcm = lcm * i // gcd(lcm, i)
-    return lcm
+    return reduce(lambda a, b: a * b // gcd(a, b), currents_length)
 
 
 if __name__ == '__main__':
