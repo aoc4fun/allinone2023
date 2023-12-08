@@ -51,31 +51,15 @@ def part_1(input_data):
         for order in orders:
             length += 1
             logger.debug(f'Current node: {currentNode} with order {order}')
-            if order=="R":
-                currentNode=nodes[currentNode][1]
-            else:
-                currentNode=nodes[currentNode][0]
+            currentNode=nodes[currentNode][order=="R"]
         if currentNode=="ZZZ":
             return length
 
 def move(currentNode, nodes, order):
-    if order=="R":
-        return nodes[currentNode][1]
-    else:
-        return nodes[currentNode][0]
-
-def is_end(current_state):
-    for node in current_state:
-        if not node.endswith("Z"):
-            return False
-    return True
+    return nodes[currentNode][(order=="R")]
 
 def find_start_node(nodes):
-    list_path=[]
-    for node, data in nodes.items():
-        if node.endswith("A"):
-            list_path.append(node)
-    return list_path
+    return [node for node, data in nodes.items() if node.endswith("A")]
 
 def find_lenght(start,orders,nodes):
     current_path=start
@@ -92,15 +76,11 @@ from math import gcd
 
 def part_2(input_data):
     orders, nodes = prepare_data(input_data)
-    currents_path=find_start_node(nodes)
-    length=[]
-    for current_path in currents_path:
-        length.append(find_lenght(current_path,orders,nodes))
-    logger.debug(f"Length: {length}")
+    currents_length=[find_lenght(current_path,orders,nodes) for current_path in find_start_node(nodes)]
+    logger.debug(f"Length: {currents_length}")
     lcm = 1
-    for i in length:
+    for i in currents_length:
         lcm = lcm * i // gcd(lcm, i)
-
     return lcm
 
 if __name__ == '__main__':
