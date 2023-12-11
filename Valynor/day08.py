@@ -1,6 +1,5 @@
 import helper.helper as aoc
-from math import gcd
-from functools import reduce
+import math
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -55,10 +54,6 @@ def part_1(input_data):
     return length
 
 
-def move(current_node, nodes, order):
-    return nodes[current_node][(order == "R")]
-
-
 def find_start_node(nodes):
     return [node for node, data in nodes.items() if node.endswith("A")]
 
@@ -66,7 +61,7 @@ def find_start_node(nodes):
 def find_length(current_path, orders, nodes):
     length = 0
     while not current_path.endswith("Z"):
-        current_path = move(current_path, nodes, orders[length % len(orders)])
+        current_path=nodes[current_path][orders[length % len(orders)] == "R"]
         length += 1
     return length
 
@@ -75,7 +70,7 @@ def part_2(input_data):
     orders, nodes = prepare_data(input_data)
     currents_length = [find_length(current_path, orders, nodes) for current_path in find_start_node(nodes)]
     logger.debug(f"Length: {currents_length}")
-    return reduce(lambda a, b: a * b // gcd(a, b), currents_length)
+    return math.lcm(*currents_length)
 
 
 if __name__ == '__main__':
@@ -85,5 +80,5 @@ if __name__ == '__main__':
 
     aoc.retrieve_input(8, 2023)
     load_data = aoc.load_input(8, 2023)
-    print(f"Day 5 part 1: {part_1(load_data)}")
-    print(f"Day 5 part 2: {part_2(load_data)}")
+    print(f"Day 8 part 1: {part_1(load_data)}")
+    print(f"Day 8 part 2: {part_2(load_data)}")

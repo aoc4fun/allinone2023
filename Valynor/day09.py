@@ -53,5 +53,5 @@ if __name__ == '__main__':
 
     aoc.retrieve_input(9, 2023)
     load_data = aoc.load_input(9, 2023)
-    print(f"Day 5 part 1: {part_1(load_data)}")
-    print(f"Day 5 part 2: {part_2(load_data)}")
+    print(f"Day 9 part 1: {part_1(load_data)}")
+    print(f"Day 9 part 2: {part_2(load_data)}")
