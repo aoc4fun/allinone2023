@@ -52,29 +52,29 @@ def find_start(data):
         for j in range(0,len(data[i])):
             if data[i][j] == "S":
                 start=[i,j]
-    next=None
+    next=[]
 
     try:
         if data[start[0]][start[1]-1] in ["-","F","L"]:
-            next=[start[0],start[1]-1]
+            next.append([start[0],start[1]-1])
     except:
         pass
     try:
         if data[start[0]][start[1]+1] in ["-","J","7"]:
-            next=[start[0],start[1]+1]
+            next.append([start[0],start[1]+1])
     except:
         pass
     try:
         if data[start[0]-1][start[1]] in ["F","|","7"]:
-            next=[start[0]-1,start[1]]
+            next.append([start[0]-1,start[1]])
     except:
         pass
     try:
         if data[start[0]+1][start[1]] in ["J","|","L"]:
-            next=[start[0]+1,start[1]]
+            next.append([start[0]+1,start[1]])
     except:
         pass
-    return (start,next)
+    return [start,next]
 
 
 def pipe_operator(op):
@@ -104,6 +104,7 @@ def part_1(input_data):
     pipes = prepare_data(input_data)
     position=find_start(pipes)
     start=position[0]
+    position[1]=position[1][0]
     distance=1
     while True:
         if position[1][0] == start[0] and position[1][1] == start[1]:
@@ -120,39 +121,56 @@ def print_pipes(pipes):
             print(j,end="")
         print()
 
+def is_not_clockwise(pipes):
+    for i in range(0,len(pipes)):
+        for j in range(0,len(pipes[i])):
+            if pipes[i][j]=="X":
+                break
+            if pipes[i][j]=="D":
+                return True
+    return False
+
 def part_2(input_data):
-    pipes = prepare_data(input_data)
-    position=find_start(pipes)
-    start=position[0]
-    distance=1
-    # Mark the edge
-    previous=False
+    first_pos=0
     while True:
-        if position[1][0] == start[0] and position[1][1] == start[1]:
-            pipes[position[0][0]][position[0][1]] = "X"
-            pipes[position[1][0]][position[1][1]] = "X"
-            break
-        current_position=position[0]
-        next_position=position[1]
-        position=next_step(pipes,position)
-        direction = (next_position[0] - current_position[0])
-        if direction == 1:
-            pipes[current_position[0]][current_position[1]]="D"
-            previous=True
-        else:
-            pipes[current_position[0]][current_position[1]] = "D" if previous else "X"
-            previous=False
-    counter=0
-    for line in pipes:
-        count=False
-        for cur in line:
-            if cur=="X":
-                count=True
-            if cur in ["J","-","F","|","-",".","L","7"] and count==True:
-                counter=counter+1
-            if cur=="D":
-                count=False
-    return counter
+        pipes = prepare_data(input_data)
+        position = find_start(pipes)
+        logger.debug(f"part_2 with first_pos={first_pos} with position={position}")
+        start=position[0]
+        position[1] = position[1][first_pos]
+        distance=1
+        # Mark the edge
+        previous=False
+        while True:
+            if position[1][0] == start[0] and position[1][1] == start[1]:
+                pipes[position[0][0]][position[0][1]] = "X"
+                pipes[position[1][0]][position[1][1]] = "X"
+                break
+            current_position=position[0]
+            next_position=position[1]
+            position=next_step(pipes,position)
+            direction = (next_position[0] - current_position[0])
+            if direction == 1:
+                pipes[current_position[0]][current_position[1]]="D"
+                previous=True
+            else:
+                pipes[current_position[0]][current_position[1]] = "D" if previous else "X"
+                previous=False
+        counter=0
+        if is_not_clockwise(pipes):
+            logger.debug("Not clockwise")
+            first_pos=1
+            continue;
+        for line in pipes:
+            count=False
+            for cur in line:
+                if cur=="X":
+                    count=True
+                if cur in ["J","-","F","|","-",".","L","7"] and count==True:
+                    counter=counter+1
+                if cur=="D":
+                    count=False
+        return counter
 
 
 if __name__ == '__main__':
