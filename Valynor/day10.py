@@ -106,20 +106,21 @@ def part_1(input_data):
     start=position[0]
     position[1]=position[1][0]
     distance=1
+
     while True:
         if position[1][0] == start[0] and position[1][1] == start[1]:
             logger.debug(f"found start {position[1]}")
             break
         distance=distance+1
         position=next_step(pipes,position)
-
+        pipes[position[0][0]][position[0][1]]=pipes[position[0][0]][position[0][1]].translate(str.maketrans("|JL7F-", "┃┛┗┓┏━"))
+#    print_pipes(pipes)
     return distance//2
 
 def print_pipes(pipes):
     for i in pipes:
-        for j in i:
-            print(j,end="")
-        print()
+        t="".join(i).translate(str.maketrans("|JL7F-", "│┘└┐┌─"))
+        print(t)
 
 def is_not_clockwise(pipes):
     for i in range(0,len(pipes)):
@@ -175,7 +176,7 @@ def part_2(input_data):
 
 if __name__ == '__main__':
     assert (part_1(sample) == 8)
-#    assert(part_2(sample_4)==4)
+    assert(part_2(sample_4)==4)
     assert(part_2(sample_8)==8)
     assert(part_2(sample_10)==10)
 
